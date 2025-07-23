@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:login_ui/forgot.dart';
+import 'package:login_ui/services.dart';
 import 'package:login_ui/signup.dart';
 
 class Login extends StatefulWidget {
@@ -50,6 +52,7 @@ class _LoginState extends State<Login> {
                         if (!value.contains("@")) {
                           return "@ is required";
                         }
+                        return null;
                       },
                       controller: emailController,
                       decoration: InputDecoration(
@@ -69,6 +72,7 @@ class _LoginState extends State<Login> {
                         if (value == null || value.isEmpty) {
                           return 'Password is required';
                         }
+                        return null;
                       },
                       controller: passwordController,
                       decoration: InputDecoration(
@@ -77,12 +81,36 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 10),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Forgot()),
+                          );
+                        },
+                        child: Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: Colors.blue, fontSize: 16),
+                        ),
+                      ),
+                    ),
                     SizedBox(height: 20),
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (formkey.currentState!.validate()) {
+                            login(
+                              Email: emailController.text.trim(),
+                              Password: passwordController.text.trim(),
+                              context: context,
+                            );
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           side: BorderSide(color: Colors.black, width: 1),
